@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { HttpPostsService } from '../../services/http/http-posts/http-posts.service';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { EllipsisPipe } from '@/shared/pipes/ellipsis/index.pipe';
@@ -10,12 +10,28 @@ import { EllipsisPipe } from '@/shared/pipes/ellipsis/index.pipe';
   templateUrl: './posts-list.component.html',
 })
 export class PostsListComponent {
-  httpPostsService = inject(HttpPostsService);
+  private readonly httpPostsService = inject(HttpPostsService);
   data$ = this.httpPostsService.all();
+  dataIsEmpty = signal(false);
+  isVertical = signal(false);
+  isLoading = signal(true);
+  isError = signal(false);
 
-  isVertical = false;
+  constructor() {
+    effect(() => {
+      this.data$.subscribe({
+        next: (res) => {
+          this.dataIsEmpty.set(res.length === 0)
+          this.isLoading.set(false)
+        },
+        error: () => {
+          this.isError.set(false)
+        },
+      });
+    });
+  }
 
   toggleView() {
-    this.isVertical = !this.isVertical;
+    this.isVertical.set(!this.isVertical());
   }
 }

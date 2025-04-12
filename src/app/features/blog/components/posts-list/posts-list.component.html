@@ -3,24 +3,65 @@
     <h1 class="text-xl font-medium">Últimas notícias</h1>
     <button
       (click)="toggleView()"
-      class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700 transition cursor-pointer"
+      class="px-4 py-2 rounded-lg bg-gray-800 text-white text-sm hover:bg-gray-900 transition cursor-pointer"
     >
-      {{ isVertical ? "Visualização em grade" : "Visualização em lista" }}
+      {{ isVertical() ? "Ver grade" : "Ver lista" }}
     </button>
   </div>
 
+  @if (isLoading()) {
+  <div class="grid grid-cols-4 gap-8">
+    <div class="animate-pulse flex flex-col space-y-4">
+      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+      <div class="bg-gray-300 rounded h-4 w-full"></div>
+    </div>
+    <div class="animate-pulse flex flex-col space-y-4">
+      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+      <div class="bg-gray-300 rounded h-4 w-full"></div>
+    </div>
+    <div class="animate-pulse flex flex-col space-y-4">
+      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+      <div class="bg-gray-300 rounded h-4 w-full"></div>
+    </div>
+    <div class="animate-pulse flex flex-col space-y-4">
+      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+      <div class="bg-gray-300 rounded h-4 w-full"></div>
+    </div>
+    <div class="animate-pulse flex flex-col space-y-4">
+      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+      <div class="bg-gray-300 rounded h-4 w-full"></div>
+    </div>
+    <div class="animate-pulse flex flex-col space-y-4">
+      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+      <div class="bg-gray-300 rounded h-4 w-full"></div>
+    </div>
+    <div class="animate-pulse flex flex-col space-y-4">
+      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+      <div class="bg-gray-300 rounded h-4 w-full"></div>
+    </div>
+  </div>
+  } @if (!isLoading()) {
   <div
-    [ngClass]="isVertical ? 'grid grid-cols-2 gap-8' : 'grid grid-cols-4 gap-8'"
+    [ngClass]="
+      isVertical() ? 'grid grid-cols-2 gap-8' : 'grid grid-cols-4 gap-8'
+    "
   >
-    @for (item of data$ | async; track $index) {
+    @if (!dataIsEmpty()) { @for (item of data$ | async; track $index) {
     <div
       class="cursor-pointer rounded-2xl transition duration-500 flex"
-      [ngClass]="isVertical ? 'flex-row items-center' : 'flex-col'"
+      [ngClass]="isVertical() ? 'flex-row items-center' : 'flex-col'"
     >
       <div
         class="overflow-hidden rounded-xl"
         [ngClass]="
-          isVertical ? 'w-32 h-32 mr-6 flex-shrink-0' : 'w-full h-48 mb-4'
+          isVertical() ? 'w-32 h-32 mr-6 flex-shrink-0' : 'w-full h-48 mb-4'
         "
       >
         <img
@@ -38,6 +79,9 @@
         </p>
       </div>
     </div>
+    } } @else {
+    <div>Nenhuma postagem</div>
     }
   </div>
+  }
 </section>
