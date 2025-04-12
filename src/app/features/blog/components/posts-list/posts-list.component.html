@@ -1,0 +1,9 @@
+<p>posts-list works!</p>
+
+<section>
+  @for (item of data$ | async; track $index) {
+  <div>
+    {{ item.title }}
+  </div>
+  }
+</section>
