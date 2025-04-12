@@ -11,7 +11,9 @@ import { EllipsisPipe } from '@/shared/pipes/ellipsis/index.pipe';
 })
 export class PostsListComponent {
   private readonly httpPostsService = inject(HttpPostsService);
+
   data$ = this.httpPostsService.all();
+
   dataIsEmpty = signal(false);
   isVertical = signal(false);
   isLoading = signal(true);

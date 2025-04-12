@@ -4,5 +4,5 @@ import { PostDetailComponent } from './components/post-detail/post-detail.compon
 
 export const blogRoutes: Routes = [
   { path: '', component: PostsListComponent },
-  { path: ':id', component: PostDetailComponent },
+  { path: ':postId', component: PostDetailComponent },
 ];

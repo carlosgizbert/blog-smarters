@@ -5,7 +5,7 @@
       (click)="toggleView()"
       class="px-4 py-2 rounded-lg bg-gray-800 text-white text-sm hover:bg-gray-900 transition cursor-pointer"
     >
-      {{ isVertical() ? "Ver grade" : "Ver lista" }}
+      {{ isVertical() ? "Ver em grade" : "Ver em lista" }}
     </button>
   </div>
 
@@ -54,7 +54,8 @@
     "
   >
     @if (!dataIsEmpty()) { @for (item of data$ | async; track $index) {
-    <div
+    <a
+      [href]="`/posts/` + item.id"
       class="cursor-pointer rounded-2xl transition duration-500 flex"
       [ngClass]="isVertical() ? 'flex-row items-center' : 'flex-col'"
     >
@@ -78,7 +79,7 @@
           {{ item.body | ellipsis : 120 }}
         </p>
       </div>
-    </div>
+    </a>
     } } @else {
     <div>Nenhuma postagem</div>
     }

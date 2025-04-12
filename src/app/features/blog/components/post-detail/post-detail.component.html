@@ -1,1 +1,7 @@
-<p>post-detail works!</p>
+@if (isLoading()) {
+  Carregando...
+} @else if (isError()) {
+  Erro ao carregar
+} @else {
+  {{ data()?.id }}
+}
