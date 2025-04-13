@@ -7,11 +7,12 @@ import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
 import { EllipsisPipe } from '@/shared/pipes/ellipsis/index.pipe';
 import { GetPostsResponse } from '@/features/blog/models/interfaces/http/posts';
+import { ContainerComponent } from "../../../../core/components/container/container.component";
 
 @Component({
   standalone: true,
   selector: 'app-posts-list',
-  imports: [NgClass, EllipsisPipe],
+  imports: [NgClass, EllipsisPipe, ContainerComponent, ContainerComponent],
   templateUrl: './posts-list.component.html',
 })
 export class PostsListComponent {
@@ -40,9 +41,7 @@ export class PostsListComponent {
   }
 
   computeTotalPages() {
-    this.totalPages.set(
-      Math.ceil(this.filteredData().length / this.PAGE_SIZE)
-    )
+    this.totalPages.set(Math.ceil(this.filteredData().length / this.PAGE_SIZE));
   }
 
   computeDataIsEmpty() {

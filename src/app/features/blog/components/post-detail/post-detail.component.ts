@@ -3,18 +3,22 @@ import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
-import { GetPostsResponse } from '@/features/blog/models/interfaces/http/posts';
+import { HttpCommentsService } from '@/features/blog/services//http/http-comments/http-comments.service';
+import {
+  GetCommentsResponse,
+  GetPostsResponse,
+} from '@/features/blog/models/interfaces/http/posts';
 import { GetUserResponse } from '@/features/blog/models/interfaces/http/user';
 
 @Component({
   selector: 'app-post-detail',
   standalone: true,
   templateUrl: './post-detail.component.html',
-  styleUrl: './post-detail.component.css',
 })
 export class PostDetailComponent {
   private readonly httpPostsService = inject(HttpPostsService);
   private readonly httpUsersService = inject(HttpUsersService);
+  private readonly httpCommentsService = inject(HttpCommentsService);
   private readonly route = inject(ActivatedRoute);
 
   readonly postId = signal<number | null>(null);
@@ -25,6 +29,10 @@ export class PostDetailComponent {
   readonly authorData = signal<GetUserResponse | null>(null);
   readonly authorIsLoading = signal(true);
   readonly authorIsError = signal(false);
+
+  readonly commentsData = signal<GetCommentsResponse[]>([]);
+  readonly commentsIsLoading = signal(true);
+  readonly commentsIsError = signal(false);
 
   constructor() {
     this.route.paramMap.subscribe((params) => {
@@ -54,10 +62,30 @@ export class PostDetailComponent {
           this.postData.set(postResponse);
           this.postIsLoading.set(false);
           this.fetchAuthor(postResponse.userId);
+          this.fetchComments(postResponse.id);
         },
         error: () => {
           this.postIsError.set(true);
           this.postIsLoading.set(false);
+        },
+      });
+  }
+
+  private fetchComments(postId: number) {
+    this.commentsIsLoading.set(true);
+    this.commentsIsError.set(false);
+
+    this.httpCommentsService
+      .getPostsComments({ postId })
+      .pipe(take(1))
+      .subscribe({
+        next: (commentsResponse) => {
+          this.commentsData.set(commentsResponse);
+          this.commentsIsLoading.set(false);
+        },
+        error: () => {
+          this.commentsIsError.set(true);
+          this.commentsIsLoading.set(false);
         },
       });
   }
@@ -79,5 +107,9 @@ export class PostDetailComponent {
           this.authorIsLoading.set(false);
         },
       });
+  }
+
+  submitComment(event: Event) {
+
   }
 }

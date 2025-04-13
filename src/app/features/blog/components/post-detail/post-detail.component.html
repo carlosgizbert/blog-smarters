@@ -1,33 +1,91 @@
-<main class="container mx-auto mt-8">
-  <section class="max-w-2xl mx-auto">
-    <div>
-      @if (postIsLoading()) {
-        <div>
-          Carregando...
-        </div>
-       } @else if (postIsError()) {
-        <div>
-          Erro ao carregar
-        </div>
-        } @else {
-      <div class="flex flex-col gap-8">
-        <section class="flex flex-col gap-8">
-          <h1 class="text-4xl font-bold">{{ postData()?.title }}</h1>
-          <div class="flex gap-2 items-center">
-            <div class="h-10 w-10 bg-slate-900 rounded-full"></div>
-            <div class="flex flex-col">
-              <h3 class="text-xl">Written by {{ authorData()?.name }}</h3>
-              <div class="text-sm text-slate-700 flex gap-2">
-                <p>{{ authorData()?.address?.city }}</p>
-                -
-                <p>{{ authorData()?.website }}</p>
-              </div>
+<main class="container mx-4 md:mx-auto mt-8 mb-20">
+  <article class="max-w-3xl mx-auto">
+    @if (postIsLoading()) {
+    <p>Carregando...</p>
+    } @else if (postIsError()) {
+    <p>Erro ao carregar</p>
+    } @else {
+    <header class="flex flex-col gap-8">
+      <section class="flex flex-col gap-8">
+        <h1 class="text-4xl font-bold">{{ postData()?.title }}</h1>
+        <div class="flex gap-2 items-center">
+          <div class="h-10 w-10 bg-slate-900 rounded-full"></div>
+          <address class="not-italic flex flex-col">
+            <h3 class="text-xl">Written by {{ authorData()?.name }}</h3>
+            <div class="text-sm text-slate-700 flex gap-2">
+              <p>{{ authorData()?.address?.city }}</p>
+              <span>-</span>
+              <p>{{ authorData()?.website }}</p>
             </div>
+          </address>
+        </div>
+      </section>
+    </header>
+    <section class="mt-6">
+      <p class="text-2xl leading-9">{{ postData()?.body }}</p>
+    </section>
+    }
+  </article>
+
+  <section class="mt-10 max-w-3xl mx-auto">
+    @if (commentsIsLoading()) {
+    <p>Carregando...</p>
+    } @else if (commentsIsError()) {
+    <p>Erro ao carregar comentários</p>
+    } @else {
+    <section class="flex flex-col gap-8" aria-label="Comentários">
+      <h2 class="text-xl font-semibold text-gray-800">
+        Comentários ({{ commentsData().length }})
+      </h2>
+      <form (submit)="submitComment($event)" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 transition"
+            placeholder="Qual seu nome?"
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="message" class="text-sm text-gray-600">Comentário</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-800 transition resize-none"
+            placeholder="Escreva seu comentário..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="flex justify-end">
+          <button
+            type="submit"
+            class="px-6 py-2 rounded-lg bg-gray-800 text-white text-sm hover:bg-gray-900 transition cursor-pointer"
+          >
+            Publicar comentário
+          </button>
+        </div>
+      </form>
+      @for (comment of commentsData(); track $index) {
+      <article class="flex flex-col items-start gap-2">
+        <header class="flex gap-3 items-center">
+          <div class="h-8 w-8 bg-slate-400 rounded-full"></div>
+          <div class="flex flex-col">
+            <p class="text-sm font-medium">{{ comment.name }}</p>
+            <p class="text-sm text-slate-500">
+              {{ comment.email.toLowerCase() }}
+            </p>
           </div>
-          <p class="text-lg">{{ postData()?.body }}</p>
-        </section>
-      </div>
+        </header>
+        <p class="text-sm">
+          {{ comment.body }}
+        </p>
+      </article>
       }
-    </div>
+    </section>
+    }
   </section>
 </main>
