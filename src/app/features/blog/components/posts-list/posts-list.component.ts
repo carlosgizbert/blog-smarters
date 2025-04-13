@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, effect } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -17,22 +17,59 @@ import { GetPostsResponse } from '@/features/blog/models/interfaces/http/posts';
 export class PostsListComponent {
   private readonly httpPostsService = inject(HttpPostsService);
   private readonly httpUsersService = inject(HttpUsersService);
+  readonly PAGE_SIZE = 8;
 
   fullData = signal<GetPostsResponse[]>([]);
+  filteredData = signal<GetPostsResponse[]>([]);
   currentPageData = signal<GetPostsResponse[]>([]);
   isVertical = signal(false);
   isLoading = signal(true);
   isError = signal(false);
-  dataIsEmpty = computed(() => this.fullData().length === 0);
+  dataIsEmpty = signal(false);
 
-  readonly PAGE_SIZE = 8;
   currentPage = signal(1);
-  totalPages = computed(() =>
-    Math.ceil(this.fullData().length / this.PAGE_SIZE)
-  );
+  totalPages = signal(0);
 
   constructor() {
     this.fetchData();
+
+    effect(() => {
+      this.computeTotalPages();
+      this.computeDataIsEmpty();
+    });
+  }
+
+  computeTotalPages() {
+    this.totalPages.set(
+      Math.ceil(this.filteredData().length / this.PAGE_SIZE)
+    )
+  }
+
+  computeDataIsEmpty() {
+    this.dataIsEmpty.set(this.filteredData().length === 0);
+  }
+
+  search(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const searchTerm = inputElement.value.toLowerCase();
+
+    if (!searchTerm) {
+      this.filteredData.set(this.fullData());
+      this.setPage(1);
+      return;
+    }
+
+    const filteredData = this.fullData().filter((post) => {
+      return (
+        post.title.toLowerCase().includes(searchTerm) ||
+        post.body.toLowerCase().includes(searchTerm) ||
+        post.author?.name.toLowerCase().includes(searchTerm) ||
+        ''
+      );
+    });
+
+    this.filteredData.set(filteredData);
+    this.setPage(1);
   }
 
   private fetchData() {
@@ -42,6 +79,7 @@ export class PostsListComponent {
       .subscribe({
         next: (postsWithAuthors) => {
           this.fullData.set(postsWithAuthors);
+          this.filteredData.set(postsWithAuthors);
           this.setPage(1);
           this.isLoading.set(false);
         },
@@ -61,11 +99,14 @@ export class PostsListComponent {
     return forkJoin(authorRequests);
   }
 
-  setPage(page: number) {
+  private setPage(page: number) {
+    const filtered = this.filteredData();
     const start = (page - 1) * this.PAGE_SIZE;
     const end = start + this.PAGE_SIZE;
-    this.currentPageData.set(this.fullData().slice(start, end));
+
+    this.currentPageData.set(filtered.slice(start, end));
     this.currentPage.set(page);
+    this.totalPages.set(Math.ceil(filtered.length / this.PAGE_SIZE));
   }
 
   nextPage() {

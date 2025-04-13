@@ -1,17 +1,30 @@
 <main class="container mx-auto mt-8">
-  <section>
+  <section class="max-w-2xl mx-auto">
     <div>
-      @if (postIsLoading()) { Carregando... } @else if (postIsError()) { Erro ao
-      carregar } @else {
-      <div class="flex flex-col gap-8 max-w-2xl">
-        <section class="flex flex-col gap-4">
-          <h1 class="text-2xl">{{ postData()?.title }}</h1>
-          <h3>{{ postData()?.body }}</h3>
-        </section>
-        <section class="flex flex-col gap-1">
-          <h3 class="text-xl">Written by {{ authorData()?.name }}</h3>
-          <p>{{ authorData()?.address?.city }}</p>
-          <p>{{ authorData()?.website }}</p>
+      @if (postIsLoading()) {
+        <div>
+          Carregando...
+        </div>
+       } @else if (postIsError()) {
+        <div>
+          Erro ao carregar
+        </div>
+        } @else {
+      <div class="flex flex-col gap-8">
+        <section class="flex flex-col gap-8">
+          <h1 class="text-4xl font-bold">{{ postData()?.title }}</h1>
+          <div class="flex gap-2 items-center">
+            <div class="h-10 w-10 bg-slate-900 rounded-full"></div>
+            <div class="flex flex-col">
+              <h3 class="text-xl">Written by {{ authorData()?.name }}</h3>
+              <div class="text-sm text-slate-700 flex gap-2">
+                <p>{{ authorData()?.address?.city }}</p>
+                -
+                <p>{{ authorData()?.website }}</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-lg">{{ postData()?.body }}</p>
         </section>
       </div>
       }
