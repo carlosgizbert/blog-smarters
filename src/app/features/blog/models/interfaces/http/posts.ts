@@ -1,19 +1,15 @@
-export interface GetAllPostsResponse {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}
+import { GetUserResponse } from "./user";
 
 export interface GetOnePostQuery {
   postId: number;
 }
 
-export interface GetOnePostResponse {
+export interface GetPostsResponse {
   userId: number;
   id: number;
   title: string;
   body: string;
+  author: GetUserResponse | null
 }
 
 export interface GetCommentsQuery {

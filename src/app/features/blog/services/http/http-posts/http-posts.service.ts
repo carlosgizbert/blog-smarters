@@ -1,10 +1,9 @@
 import {
-  GetAllPostsResponse,
+  GetPostsResponse,
   GetCommentsQuery,
   GetCommentsResponse,
   GetOnePostQuery,
-  GetOnePostResponse,
-} from '@/features/blog/models/interfaces/http';
+} from '@/features/blog/models/interfaces/http/posts';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
@@ -17,12 +16,12 @@ export class HttpPostsService {
   private readonly baseUrl = environment.apiUrl;
   httpService = inject(HttpClient);
 
-  all(): Observable<GetAllPostsResponse[]> {
-    return this.httpService.get<GetAllPostsResponse[]>(`${this.baseUrl}/posts`);
+  all(): Observable<GetPostsResponse[]> {
+    return this.httpService.get<GetPostsResponse[]>(`${this.baseUrl}/posts`);
   }
 
-  one(query: GetOnePostQuery): Observable<GetOnePostResponse> {
-    return this.httpService.get<GetOnePostResponse>(
+  one(query: GetOnePostQuery): Observable<GetPostsResponse> {
+    return this.httpService.get<GetPostsResponse>(
       `${this.baseUrl}/posts/${query.postId}`
     );
   }

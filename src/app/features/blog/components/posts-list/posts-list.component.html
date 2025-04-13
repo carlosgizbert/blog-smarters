@@ -1,88 +1,68 @@
 <section class="mt-14 flex flex-col gap-8 container mx-auto">
   <div class="flex justify-between items-center">
     <h1 class="text-xl font-medium">Últimas notícias</h1>
-    <button
-      (click)="toggleView()"
-      class="px-4 py-2 rounded-lg bg-gray-800 text-white text-sm hover:bg-gray-900 transition cursor-pointer"
-    >
+    <button (click)="toggleView()"
+      class="px-4 py-2 rounded-lg bg-gray-800 text-white text-sm hover:bg-gray-900 transition cursor-pointer">
       {{ isVertical() ? "Ver em grade" : "Ver em lista" }}
     </button>
   </div>
 
   @if (isLoading()) {
-  <div class="grid grid-cols-4 gap-8">
-    <div class="animate-pulse flex flex-col space-y-4">
-      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
-      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-      <div class="bg-gray-300 rounded h-4 w-full"></div>
+    <div class="grid grid-cols-4 gap-8">
+      <div class="animate-pulse flex flex-col space-y-4">
+        <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+        <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+        <div class="bg-gray-300 rounded h-4 w-full"></div>
+      </div>
+      <div class="animate-pulse flex flex-col space-y-4">
+        <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+        <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+        <div class="bg-gray-300 rounded h-4 w-full"></div>
+      </div>
+      <div class="animate-pulse flex flex-col space-y-4">
+        <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
+        <div class="bg-gray-300 rounded h-6 w-3/4"></div>
+        <div class="bg-gray-300 rounded h-4 w-full"></div>
+      </div>
     </div>
-    <div class="animate-pulse flex flex-col space-y-4">
-      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
-      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-      <div class="bg-gray-300 rounded h-4 w-full"></div>
-    </div>
-    <div class="animate-pulse flex flex-col space-y-4">
-      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
-      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-      <div class="bg-gray-300 rounded h-4 w-full"></div>
-    </div>
-    <div class="animate-pulse flex flex-col space-y-4">
-      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
-      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-      <div class="bg-gray-300 rounded h-4 w-full"></div>
-    </div>
-    <div class="animate-pulse flex flex-col space-y-4">
-      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
-      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-      <div class="bg-gray-300 rounded h-4 w-full"></div>
-    </div>
-    <div class="animate-pulse flex flex-col space-y-4">
-      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
-      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-      <div class="bg-gray-300 rounded h-4 w-full"></div>
-    </div>
-    <div class="animate-pulse flex flex-col space-y-4">
-      <div class="bg-gray-300 rounded-xl h-48 w-full"></div>
-      <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-      <div class="bg-gray-300 rounded h-4 w-full"></div>
-    </div>
-  </div>
-  } @if (!isLoading()) {
-  <div
-    [ngClass]="
-      isVertical() ? 'grid grid-cols-2 gap-8' : 'grid grid-cols-4 gap-8'
-    "
-  >
-    @if (!dataIsEmpty()) { @for (item of data$ | async; track $index) {
-    <a
-      [href]="`/posts/` + item.id"
-      class="cursor-pointer rounded-2xl transition duration-500 flex"
-      [ngClass]="isVertical() ? 'flex-row items-center' : 'flex-col'"
-    >
-      <div
-        class="overflow-hidden rounded-xl"
-        [ngClass]="
-          isVertical() ? 'w-32 h-32 mr-6 flex-shrink-0' : 'w-full h-48 mb-4'
-        "
-      >
-        <img
-          src="https://picsum.photos/200/300"
-          alt="Notícia"
-          class="w-full h-full object-cover"
-        />
+  } @else {
+  <div [ngClass]="isVertical() ? 'grid grid-cols-2 gap-8' : 'grid grid-cols-4 gap-8'">
+    @if (!dataIsEmpty()) {
+    @for (item of currentPageData(); track $index) {
+    <a [href]="'/posts/' + item.id" class="cursor-pointer rounded-2xl transition duration-500 flex"
+      [ngClass]="isVertical() ? 'flex-row items-center' : 'flex-col'">
+      <div class="overflow-hidden rounded-xl"
+        [ngClass]="isVertical() ? 'w-28 h-28 mr-6 flex-shrink-0' : 'w-full h-36 mb-4'">
+        <img src="https://picsum.photos/200/300" alt="Notícia" class="w-full h-full object-cover" />
       </div>
       <div class="flex flex-col">
-        <h1 class="text-lg text-gray-700 font-semibold">
-          {{ item.title | ellipsis : 32 }}
-        </h1>
-        <p class="mt-3 text-sm text-gray-600">
-          {{ item.body | ellipsis : 120 }}
-        </p>
+        <h1 class="text-lg text-gray-700 font-semibold">{{ item.title | ellipsis:32 }}</h1>
+        <p class="mt-3 text-sm text-gray-600">{{ item.body | ellipsis:120 }}</p>
+        <div class="mt-3 text-gray-700">{{ item.author?.name }}</div>
       </div>
     </a>
-    } } @else {
+    }
+    } @else {
     <div>Nenhuma postagem</div>
     }
+  </div>
+
+  <div class="flex justify-center gap-4 m-4 mb-12">
+    <button
+      (click)="prevPage()"
+      [disabled]="currentPage() === 1"
+      class="px-4 py-2 rounded-lg bg-gray-800 disabled:bg-gray-300 text-white text-sm hover:bg-gray-900 transition cursor-pointer disabled:cursor-not-allowed select-none">
+      Anterior
+    </button>
+    <div class="flex items-center px-4 py-2 text-gray-700 text-sm">
+      Página {{ currentPage() }} de {{ totalPages() }}
+    </div>
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage() === totalPages()"
+      class="px-4 py-2 rounded-lg bg-gray-800 disabled:bg-gray-300 text-white text-sm hover:bg-gray-900 transition cursor-pointer disabled:cursor-not-allowed select-none">
+      Próxima
+    </button>
   </div>
   }
 </section>
