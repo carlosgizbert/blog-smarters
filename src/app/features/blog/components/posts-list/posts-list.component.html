@@ -1,24 +1,20 @@
 <app-container>
-  <div class="my-10 flex flex-col gap-8">
-    <header
-      class="flex flex-col gap-4 md:flex-row justify-between items-start md:items-center"
-    >
-      <h1 class="text-2xl font-medium">Últimas publicações</h1>
-      <div class="flex gap-4 items-center">
-        <div class="relative w-96">
+  <div class="my-10 flex flex-col">
+    <header class="flex flex-col gap-6 md:flex-row md:gap-8 justify-between items-start md:items-center mb-8">
+      <h1 class="text-2xl font-semibold text-slate-800">Últimas publicações</h1>
+      <div class="flex w-full md:w-auto flex-col gap-4 md:flex-row md:items-center">
+        <div class="relative w-full md:w-80">
           <label for="search" class="sr-only">Buscar publicações</label>
           <input
             type="text"
             id="search"
-            class="py-1 pl-10 pr-4 border rounded-md text-gray-700 focus:outline-none transition-all duration-300"
-            placeholder="O que deseja ler agora?"
+            class="w-full py-2 pl-10 pr-4 border border-slate-300 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 transition-all duration-300"
+            placeholder="Buscar..."
             (input)="search($event)"
           />
-          <div
-            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-          >
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg
-              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+              class="w-5 h-5 text-slate-500"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -37,7 +33,7 @@
 
         <button
           (click)="toggleView()"
-          class="px-4 py-2 rounded-md bg-gray-800 text-white text-sm hover:bg-gray-900 transition cursor-pointer"
+          class="w-full md:w-auto px-4 py-3 cursor-pointer rounded-lg bg-slate-800 text-white text-sm hover:bg-slate-900 transition"
         >
           {{ isVertical() ? "Ver em grade" : "Ver em lista" }}
         </button>
@@ -45,21 +41,28 @@
     </header>
 
     @if (isLoading()) {
-    <section class="grid grid-cols-4 gap-8" aria-label="Carregando notícias">
+    <section
+      [ngClass]="
+        isVertical()
+          ? 'flex md:grid flex-col md:grid-cols-2 gap-8'
+          : 'flex md:grid flex-col md:grid-cols-3 gap-8'
+      "
+      aria-label="Carregando notícias"
+    >
       <article class="animate-pulse flex flex-col space-y-4">
-        <div class="bg-gray-300 rounded-md h-48 w-full"></div>
-        <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-        <div class="bg-gray-300 rounded h-4 w-full"></div>
+        <div class="bg-slate-300 rounded-md h-48 w-full"></div>
+        <div class="bg-slate-300 rounded h-6 w-3/4"></div>
+        <div class="bg-slate-300 rounded h-4 w-full"></div>
       </article>
       <article class="animate-pulse flex flex-col space-y-4">
-        <div class="bg-gray-300 rounded-md h-48 w-full"></div>
-        <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-        <div class="bg-gray-300 rounded h-4 w-full"></div>
+        <div class="bg-slate-300 rounded-md h-48 w-full"></div>
+        <div class="bg-slate-300 rounded h-6 w-3/4"></div>
+        <div class="bg-slate-300 rounded h-4 w-full"></div>
       </article>
       <article class="animate-pulse flex flex-col space-y-4">
-        <div class="bg-gray-300 rounded-md h-48 w-full"></div>
-        <div class="bg-gray-300 rounded h-6 w-3/4"></div>
-        <div class="bg-gray-300 rounded h-4 w-full"></div>
+        <div class="bg-slate-300 rounded-md h-48 w-full"></div>
+        <div class="bg-slate-300 rounded h-6 w-3/4"></div>
+        <div class="bg-slate-300 rounded h-4 w-full"></div>
       </article>
     </section>
     } @else {
@@ -72,7 +75,7 @@
       aria-label="Lista de notícias"
     >
       @if (dataIsEmpty()) {
-      <div class="flex items-center">Nada encontrado.</div>
+      <div class="flex items-center">Nada encontrado</div>
       } @else { @for (item of currentPageData(); track $index) {
       <article>
         <a
@@ -93,13 +96,13 @@
             />
           </div>
           <div class="flex flex-col">
-            <h2 class="text-lg text-gray-700 font-semibold">
+            <h2 class="text-lg text-slate-700 font-semibold">
               {{ item.title | ellipsis : 32 }}
             </h2>
-            <p class="mt-3 text-sm text-gray-600">
+            <p class="mt-3 text-sm text-slate-600">
               {{ item.body | ellipsis : 120 }}
             </p>
-            <p class="mt-3 text-gray-700 text-sm">{{ item.author?.name }}</p>
+            <p class="mt-3 text-slate-700 text-sm">{{ item.author?.name }}</p>
           </div>
         </a>
       </article>
@@ -107,23 +110,23 @@
     </section>
 
     <nav
-      class="flex justify-center gap-4 m-4 mb-12"
+      class="flex justify-center gap-4 m-4 my-12"
       aria-label="Paginação de notícias"
     >
       <button
         (click)="prevPage()"
         [disabled]="currentPage() === 1"
-        class="px-4 py-2 rounded-md bg-gray-800 disabled:bg-gray-300 text-white text-sm hover:bg-gray-900 transition cursor-pointer disabled:cursor-not-allowed select-none"
+        class="px-4 py-2 rounded-md bg-slate-800 disabled:bg-slate-300 text-white text-sm hover:bg-slate-900 transition cursor-pointer disabled:cursor-not-allowed select-none"
       >
         Anterior
       </button>
-      <div class="flex items-center px-4 py-2 text-gray-700 text-sm">
+      <div class="flex items-center px-4 py-2 text-slate-700 text-sm">
         Página {{ currentPage() }} de {{ totalPages() }}
       </div>
       <button
         (click)="nextPage()"
         [disabled]="currentPage() === totalPages()"
-        class="px-4 py-2 rounded-md bg-gray-800 disabled:bg-gray-300 text-white text-sm hover:bg-gray-900 transition cursor-pointer disabled:cursor-not-allowed select-none"
+        class="px-4 py-2 rounded-md bg-slate-800 disabled:bg-slate-300 text-white text-sm hover:bg-slate-900 transition cursor-pointer disabled:cursor-not-allowed select-none"
       >
         Próxima
       </button>

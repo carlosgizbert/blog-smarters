@@ -3,19 +3,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
-import { HttpCommentsService } from '@/features/blog/services//http/http-comments/http-comments.service';
+import { HttpCommentsService } from '@/features/blog/services/http/http-comments/http-comments.service';
 import {
   GetCommentsResponse,
   GetPostsResponse,
 } from '@/features/blog/models/interfaces/http/posts';
 import { GetUserResponse } from '@/features/blog/models/interfaces/http/user';
-import { ContainerComponent } from "../../../../core/components/container/container.component";
+import { ContainerComponent } from '@/core/components/container/container.component';
 
 @Component({
   selector: 'app-post-detail',
   standalone: true,
   templateUrl: './post-detail.component.html',
-  imports: [ContainerComponent, ContainerComponent],
+  imports: [ContainerComponent],
 })
 export class PostDetailComponent {
   private readonly httpPostsService = inject(HttpPostsService);
@@ -41,7 +41,14 @@ export class PostDetailComponent {
     this.route.paramMap.subscribe((params) => {
       const postIdParam = params.get('postId');
       if (postIdParam) {
-        this.postId.set(Number(postIdParam));
+        const postId = Number(postIdParam);
+        if (isNaN(postId) || postId <= 0) {
+          this.handleError('Post não encontrado');
+        } else {
+          this.postId.set(postId);
+        }
+      } else {
+        this.handleError('Post não encontrado');
       }
     });
 
@@ -72,8 +79,7 @@ export class PostDetailComponent {
           this.fetchComments(postResponse.id);
         },
         error: () => {
-          this.postIsError.set(true);
-          this.postIsLoading.set(false);
+          this.handleError('Erro ao carregar o post');
         },
       });
   }
@@ -110,11 +116,22 @@ export class PostDetailComponent {
           this.authorIsLoading.set(false);
         },
         error: () => {
-          this.authorIsError.set(true);
-          this.authorIsLoading.set(false);
+          this.handleError('Erro ao carregar o autor');
         },
       });
   }
 
-  submitComment(event: Event) {}
+  private handleError(message: string) {
+    this.postIsError.set(true);
+    this.authorIsError.set(true);
+    this.commentsIsError.set(true);
+    this.postIsLoading.set(false);
+    this.authorIsLoading.set(false);
+    this.commentsIsLoading.set(false);
+    alert(message);
+    this.router.navigate(['/']);
+  }
+
+  submitComment(event: Event) {
+  }
 }
