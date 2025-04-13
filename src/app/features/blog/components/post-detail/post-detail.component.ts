@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
@@ -9,17 +9,20 @@ import {
   GetPostsResponse,
 } from '@/features/blog/models/interfaces/http/posts';
 import { GetUserResponse } from '@/features/blog/models/interfaces/http/user';
+import { ContainerComponent } from "../../../../core/components/container/container.component";
 
 @Component({
   selector: 'app-post-detail',
   standalone: true,
   templateUrl: './post-detail.component.html',
+  imports: [ContainerComponent, ContainerComponent],
 })
 export class PostDetailComponent {
   private readonly httpPostsService = inject(HttpPostsService);
   private readonly httpUsersService = inject(HttpUsersService);
   private readonly httpCommentsService = inject(HttpCommentsService);
-  private readonly route = inject(ActivatedRoute);
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly router: Router = inject(Router);
 
   readonly postId = signal<number | null>(null);
   readonly postData = signal<GetPostsResponse | null>(null);
@@ -48,6 +51,10 @@ export class PostDetailComponent {
         this.fetchPostAndAuthor(id);
       }
     });
+  }
+
+  navigate(path: string) {
+    this.router.navigate([path]);
   }
 
   private fetchPostAndAuthor(postId: number) {
@@ -109,7 +116,5 @@ export class PostDetailComponent {
       });
   }
 
-  submitComment(event: Event) {
-
-  }
+  submitComment(event: Event) {}
 }

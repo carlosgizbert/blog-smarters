@@ -1,17 +1,17 @@
 <app-container>
-  <div class="flex flex-col gap-8">
+  <div class="my-10 flex flex-col gap-8">
     <header
-      class="flex flex-col gap-4 md:flex-row justify-between items-center"
+      class="flex flex-col gap-4 md:flex-row justify-between items-start md:items-center"
     >
-      <h1 class="text-xl font-medium">Últimas notícias</h1>
+      <h1 class="text-2xl font-medium">Últimas publicações</h1>
       <div class="flex gap-4 items-center">
         <div class="relative w-96">
-          <label for="search" class="sr-only">Buscar notícias</label>
+          <label for="search" class="sr-only">Buscar publicações</label>
           <input
             type="text"
             id="search"
-            class="w-full py-2 pl-10 pr-4 border rounded-md text-gray-700 focus:outline-none transition-all duration-300"
-            placeholder="Busque notícias"
+            class="py-1 pl-10 pr-4 border rounded-md text-gray-700 focus:outline-none transition-all duration-300"
+            placeholder="O que deseja ler agora?"
             (input)="search($event)"
           />
           <div
@@ -65,14 +65,14 @@
     } @else {
     <section
       [ngClass]="
-        isVertical() ? 'grid grid-cols-2 gap-8' : 'grid grid-cols-4 gap-8'
+        isVertical()
+          ? 'flex md:grid flex-col md:grid-cols-2 gap-8'
+          : 'flex md:grid flex-col md:grid-cols-3 gap-8'
       "
       aria-label="Lista de notícias"
     >
       @if (dataIsEmpty()) {
-      <div class="flex items-center">
-        Nenhuma notícia encontrada.
-      </div>
+      <div class="flex items-center">Nada encontrado.</div>
       } @else { @for (item of currentPageData(); track $index) {
       <article>
         <a

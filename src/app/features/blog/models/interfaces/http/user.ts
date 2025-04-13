@@ -13,6 +13,17 @@ export interface GetUserResponse {
   company: Company
 }
 
+export interface GetUserPostsQuery {
+  userId: number;
+}
+
+export interface GetUserPostsResponse {
+  userId: number
+  id: number
+  title: string
+  body: string
+}
+
 export interface Address {
   street: string
   suite: string

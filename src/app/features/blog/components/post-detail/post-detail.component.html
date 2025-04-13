@@ -1,33 +1,37 @@
-<main class="container mx-4 md:mx-auto mt-8 mb-20">
-  <article class="max-w-3xl mx-auto">
+<app-container>
+  <article class="mt-10">
     @if (postIsLoading()) {
     <p>Carregando...</p>
     } @else if (postIsError()) {
     <p>Erro ao carregar</p>
     } @else {
-    <header class="flex flex-col gap-8">
-      <section class="flex flex-col gap-8">
+    <div class="flex flex-col gap-8">
+      <div class="flex flex-col gap-6">
         <h1 class="text-4xl font-bold">{{ postData()?.title }}</h1>
-        <div class="flex gap-2 items-center">
+        <a
+          [href]="'posts/user/' + postData()?.id"
+          class="flex gap-2 items-center cursor-pointer"
+        >
           <div class="h-10 w-10 bg-slate-900 rounded-full"></div>
           <address class="not-italic flex flex-col">
-            <h3 class="text-xl">Written by {{ authorData()?.name }}</h3>
+            <h3 class="text-md underline">
+              Escrito por {{ authorData()?.name }}
+            </h3>
             <div class="text-sm text-slate-700 flex gap-2">
               <p>{{ authorData()?.address?.city }}</p>
               <span>-</span>
               <p>{{ authorData()?.website }}</p>
             </div>
           </address>
-        </div>
-      </section>
-    </header>
+        </a>
+      </div>
+    </div>
     <section class="mt-6">
       <p class="text-2xl leading-9">{{ postData()?.body }}</p>
     </section>
     }
   </article>
-
-  <section class="mt-10 max-w-3xl mx-auto">
+  <section class="mt-8 mb-10">
     @if (commentsIsLoading()) {
     <p>Carregando...</p>
     } @else if (commentsIsError()) {
@@ -84,8 +88,10 @@
           {{ comment.body }}
         </p>
       </article>
+      <hr class="border-slate-200" />
       }
+      <p class="mx-auto text-sm text-slate-500">Final da lista</p>
     </section>
     }
   </section>
-</main>
+</app-container>

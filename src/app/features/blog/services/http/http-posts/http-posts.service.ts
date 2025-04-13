@@ -4,6 +4,7 @@ import {
   GetCommentsResponse,
   GetOnePostQuery,
 } from '@/features/blog/models/interfaces/http/posts';
+import { GetUserPostsQuery, GetUserPostsResponse } from '@/features/blog/models/interfaces/http/user';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
@@ -29,6 +30,12 @@ export class HttpPostsService {
   commentsByPost(query: GetCommentsQuery): Observable<GetCommentsResponse[]> {
     return this.httpService.get<GetCommentsResponse[]>(
       `${this.baseUrl}/posts/${query.postId}/comments`
+    );
+  }
+
+  byUser(query: GetUserPostsQuery): Observable<GetUserPostsResponse[]> {
+    return this.httpService.get<GetUserPostsResponse[]>(
+      `${this.baseUrl}/users/${query.userId}/posts`
     );
   }
 }

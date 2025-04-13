@@ -16,5 +16,4 @@ export class HttpUsersService {
       `${this.baseUrl}/users/${query.userId}`
     );
   }
-
 }

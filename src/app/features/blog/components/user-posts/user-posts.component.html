@@ -1,0 +1,29 @@
+<app-container>
+  <div class="my-10 flex flex-col gap-6">
+    @if (isLoading()) {
+    <p>Carregando...</p>
+    } @else if (isError()) {
+    <p>Erro ao carregar comentários</p>
+    } @else {
+    <header class="flex flex-col gap-8">
+      <h1 class="text-2xl font-medium">
+        Publicações do usuário ({{ data()?.length }})
+      </h1>
+    </header>
+    <section class="flex flex-col gap-4" aria-label="Comentários">
+      @for (post of data(); track $index) {
+      <article class="flex flex-col items-start gap-2">
+        <header class="flex flex-col gap-3">
+          <p class="text-sm font-medium">{{ post.title }}</p>
+        </header>
+        <p class="text-sm">
+          {{ post.body }}
+        </p>
+      </article>
+      <hr class="border-slate-200" />
+      }
+    </section>
+    <p class="mx-auto text-sm text-slate-500">Final da lista</p>
+    }
+  </div>
+</app-container>
