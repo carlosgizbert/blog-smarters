@@ -17,7 +17,7 @@
 ## 📦 Instalação
 
 1. **Clone o repositório:**
-git clone https://github.com/seu-usuario/smarters-blog.git
+git clone https://github.com/carlosgizbert/blog-smarters
 
 2. **Instale as dependencias:**
 npm install
