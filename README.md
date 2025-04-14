@@ -25,5 +25,8 @@ npm install
 3. **Rode o projeto:**
 ng serve
 
+## Deploy
+https://blog-smarters.vercel.app/posts
+
 
 ![image](https://github.com/user-attachments/assets/448f46ca-5c3c-48cb-8a1b-ab8ee25f43bb)
