@@ -6,7 +6,7 @@
 
 ## 🚀 Tecnologias
 
-- [Angular 17](https://angular.io/)
+- [Angular 19](https://angular.io/)
 - [RxJS](https://rxjs.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [TailwindCSS](https://tailwindcss.com/) (opcional)
