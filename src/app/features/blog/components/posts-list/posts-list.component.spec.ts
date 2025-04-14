@@ -3,6 +3,7 @@ import { PostsListComponent } from './posts-list.component';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
 import { of } from 'rxjs';
+import { createGetPostsResponseMock } from '../../tests/mocks/posts.mock';
 
 describe('PostsListComponent', () => {
   let component: PostsListComponent;
@@ -15,28 +16,22 @@ describe('PostsListComponent', () => {
         {
           provide: HttpPostsService,
           useValue: {
-            all: () => of([
-              {
-                id: 1,
-                userId: 1,
-                title: 'Post 1',
-                body: 'Body 1',
-                author: { id: 1, name: 'User 1' }
-              },
-              {
-                id: 2,
-                userId: 2,
-                title: 'Post 2',
-                body: 'Body 2',
-                author: { id: 2, name: 'User 2' }
-              },
-            ]),
+            all: () =>
+              of([
+                createGetPostsResponseMock({
+                  title: 'Post 1',
+                }),
+                createGetPostsResponseMock({
+                  title: 'Post 2',
+                }),
+              ]),
           },
         },
         {
           provide: HttpUsersService,
           useValue: {
-            one: ({ userId }: { userId: number }) => of({ id: userId, name: `User ${userId}` }),
+            one: ({ userId }: { userId: number }) =>
+              of({ id: userId, name: `User ${userId}` }),
           },
         },
       ],
@@ -67,7 +62,6 @@ describe('PostsListComponent', () => {
     expect(component.filteredData().length).toBe(1);
     expect(component.filteredData()[0].title).toContain('Post 1');
   });
-
 
   it('should go to next page and previous page', () => {
     const initialPage = component.currentPage();

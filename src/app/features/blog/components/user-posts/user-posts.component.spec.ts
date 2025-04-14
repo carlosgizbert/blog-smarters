@@ -8,6 +8,7 @@ import { UserPostsComponent } from './user-posts.component';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { of, throwError } from 'rxjs';
+import { createGetUserPostsResponseMock } from '@/features/blog/tests/mocks/user-posts.mock';
 
 describe('UserPostsComponent', () => {
   let component: UserPostsComponent;
@@ -57,8 +58,8 @@ describe('UserPostsComponent', () => {
   it('should fetch user posts and set data successfully', fakeAsync(() => {
     mockHttpPostsService.byUser.and.returnValue(
       of([
-        { id: 1, userId: 1, title: 'User Post 1', body: 'Body 1' },
-        { id: 2, userId: 1, title: 'User Post 2', body: 'Body 2' },
+        createGetUserPostsResponseMock({ title: 'User post 1' }),
+        createGetUserPostsResponseMock({ title: 'User post 2' }),
       ])
     );
     createComponent();

@@ -5,6 +5,8 @@ import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
 import { HttpCommentsService } from '@/features/blog/services/http/http-comments/http-comments.service';
 import { of } from 'rxjs';
+import { createGetUserResponseMock } from '@/features/blog/tests/mocks/user.mock';
+import { createGetPostsResponseMock } from '../../tests/mocks/posts.mock';
 
 describe('PostDetailComponent', () => {
   let component: PostDetailComponent;
@@ -30,13 +32,18 @@ describe('PostDetailComponent', () => {
         {
           provide: HttpPostsService,
           useValue: {
-            one: () => of({ id: 1, userId: 10, title: 'Mock title', body: 'Mock body' }),
+            one: () => of(createGetPostsResponseMock()),
           },
         },
         {
           provide: HttpUsersService,
           useValue: {
-            one: () => of({ id: 10, name: 'Author name', username: 'author' }),
+            one: () =>
+              of(
+                createGetUserResponseMock({
+                  name: 'Usuario 1',
+                })
+              ),
           },
         },
         {
