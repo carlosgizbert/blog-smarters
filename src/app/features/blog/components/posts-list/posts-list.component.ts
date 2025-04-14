@@ -1,18 +1,19 @@
 import { Component, inject, signal, effect } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { delay, map, mergeMap } from 'rxjs/operators';
+import { EllipsisPipe } from '@/shared/pipes/ellipsis/index.pipe';
 
+import { ContainerComponent } from '@/core/components/container/container.component';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
-import { EllipsisPipe } from '@/shared/pipes/ellipsis/index.pipe';
 import { GetPostsResponse } from '@/features/blog/models/interfaces/http/posts';
-import { ContainerComponent } from "../../../../core/components/container/container.component";
+import { Post } from '@/features/blog/models/dtos/posts';
 
 @Component({
   standalone: true,
   selector: 'app-posts-list',
-  imports: [NgClass, EllipsisPipe, ContainerComponent, ContainerComponent],
+  imports: [NgClass, TitleCasePipe, EllipsisPipe, ContainerComponent, ContainerComponent],
   templateUrl: './posts-list.component.html',
 })
 export class PostsListComponent {
@@ -20,9 +21,9 @@ export class PostsListComponent {
   private readonly httpUsersService = inject(HttpUsersService);
   readonly PAGE_SIZE = 8;
 
-  fullData = signal<GetPostsResponse[]>([]);
-  filteredData = signal<GetPostsResponse[]>([]);
-  currentPageData = signal<GetPostsResponse[]>([]);
+  fullData = signal<Post[]>([]);
+  filteredData = signal<Post[]>([]);
+  currentPageData = signal<Post[]>([]);
   isVertical = signal(false);
   isLoading = signal(true);
   isError = signal(false);
@@ -74,7 +75,10 @@ export class PostsListComponent {
   private fetchData() {
     this.httpPostsService
       .all()
-      .pipe(mergeMap((posts) => this.fetchAuthorsForPosts(posts)), delay(1000))
+      .pipe(
+        mergeMap((posts) => this.fetchAuthorsForPosts(posts)),
+        delay(1000)
+      )
       .subscribe({
         next: (postsWithAuthors) => {
           this.fullData.set(postsWithAuthors);

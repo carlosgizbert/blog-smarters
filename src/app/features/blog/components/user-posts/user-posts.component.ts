@@ -1,14 +1,16 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { delay, take } from 'rxjs';
-import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
-import { GetUserPostsResponse } from '../../models/interfaces/http/user';
+
 import { ContainerComponent } from '@/core/components/container/container.component';
+import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
+import { UserPost } from '@/features/blog/models/dtos/posts';
 
 @Component({
   selector: 'app-user-posts',
   standalone: true,
-  imports: [ContainerComponent],
+  imports: [TitleCasePipe, ContainerComponent],
   templateUrl: './user-posts.component.html',
 })
 export class UserPostsComponent {
@@ -16,7 +18,7 @@ export class UserPostsComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly userId = signal<number | null>(null);
-  readonly data = signal<GetUserPostsResponse[] | null>(null);
+  readonly data = signal<UserPost[] | null>(null);
   readonly isLoading = signal(true);
   readonly isError = signal(false);
 
@@ -45,14 +47,23 @@ export class UserPostsComponent {
       .pipe(take(1), delay(1000))
       .subscribe({
         next: (postsResponse) => {
-          this.data.set(postsResponse);
-          this.isLoading.set(false);
+          if (postsResponse.length === 0) {
+            this.isError.set(true);
+            this.isLoading.set(false);
+          } else {
+            this.data.set(postsResponse);
+            this.isLoading.set(false);
+          }
         },
-        error: () => {
-          this.isError.set(true);
-          this.isLoading.set(false);
+        error: (error) => {
+          if (error.status === 404) {
+            this.isError.set(true);
+            this.isLoading.set(false);
+          } else {
+            this.isError.set(true);
+            this.isLoading.set(false);
+          }
         },
       });
   }
-
 }

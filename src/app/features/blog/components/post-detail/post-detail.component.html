@@ -24,7 +24,7 @@
     } @else {
     <div class="flex flex-col gap-8">
       <div class="flex flex-col gap-6">
-        <h1 class="text-4xl font-bold">{{ postData()?.title }}</h1>
+        <h1 class="text-4xl font-bold">{{ postData()?.title | titlecase }}</h1>
         <a
           [href]="'posts/user/' + postData()?.id"
           class="flex gap-2 items-center cursor-pointer"
@@ -57,7 +57,7 @@
       />
     </section>
     <section class="mt-6">
-      <p class="text-2xl leading-9">{{ postData()?.body }}</p>
+      <p class="text-2xl leading-9">{{ postData()?.body | titlecase }}</p>
     </section>
     }
   </article>
@@ -128,18 +128,18 @@
             class="h-8 w-8 bg-slate-900 rounded-full flex items-center justify-center"
           >
             <p class="text-xs text-white">
-              {{ comment?.name?.charAt(0)?.toUpperCase() }}
+              {{ comment?.name?.charAt(0) | titlecase }}
             </p>
           </div>
           <div class="flex flex-col">
-            <p class="text-sm font-medium">{{ comment.name }}</p>
+            <p class="text-sm font-medium">{{ comment.name | titlecase }}</p>
             <p class="text-sm text-slate-500">
               {{ comment.email.toLowerCase() }}
             </p>
           </div>
         </header>
         <p class="text-sm">
-          {{ comment.body }}
+          {{ comment.body | titlecase }}
         </p>
       </article>
       <hr class="border-slate-200" />
