@@ -24,9 +24,9 @@ export class UserPostsComponent {
 
   constructor() {
     this.route.paramMap.subscribe((params) => {
-      const postIdParam = params.get('userId');
-      if (postIdParam) {
-        this.userId.set(Number(postIdParam));
+      const userIdParam = params.get('userId');
+      if (userIdParam) {
+        this.userId.set(Number(userIdParam));
       }
     });
 
@@ -39,31 +39,34 @@ export class UserPostsComponent {
   }
 
   private fetchUserPosts(userId: number) {
-    this.isLoading.set(true);
-    this.isError.set(false);
+    this.startLoading();
 
     this.httpPostsService
       .byUser({ userId })
       .pipe(take(1), delay(1000))
       .subscribe({
-        next: (postsResponse) => {
-          if (postsResponse.length === 0) {
-            this.isError.set(true);
-            this.isLoading.set(false);
-          } else {
-            this.data.set(postsResponse);
-            this.isLoading.set(false);
-          }
-        },
-        error: (error) => {
-          if (error.status === 404) {
-            this.isError.set(true);
-            this.isLoading.set(false);
-          } else {
-            this.isError.set(true);
-            this.isLoading.set(false);
-          }
-        },
+        next: (posts) => this.handleSuccess(posts),
+        error: (error) => this.handleError(error),
       });
+  }
+
+  private startLoading() {
+    this.isLoading.set(true);
+    this.isError.set(false);
+  }
+
+  private handleSuccess(posts: UserPost[]) {
+    if (!posts.length) {
+      this.handleError({ status: 404 });
+      return;
+    }
+
+    this.data.set(posts);
+    this.isLoading.set(false);
+  }
+
+  private handleError(error: { status?: number }) {
+    this.isError.set(true);
+    this.isLoading.set(false);
   }
 }
