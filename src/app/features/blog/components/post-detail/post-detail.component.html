@@ -1,7 +1,24 @@
 <app-container>
   <article class="mt-10">
     @if (postIsLoading()) {
-    <p>Carregando...</p>
+      @if (postIsLoading()) {
+        <div class="flex flex-col gap-8 animate-pulse">
+          <div class="h-10 w-3/4 bg-slate-300 rounded"></div>
+          <div class="flex gap-4 items-center">
+            <div class="h-10 w-10 bg-slate-300 rounded-full"></div>
+            <div class="flex flex-col gap-2">
+              <div class="h-4 w-32 bg-slate-300 rounded"></div>
+              <div class="h-3 w-24 bg-slate-300 rounded"></div>
+            </div>
+          </div>
+          <div class="w-full h-[300px] bg-slate-300 rounded-md"></div>
+          <div class="flex flex-col gap-4 mt-6">
+            <div class="h-5 w-full bg-slate-300 rounded"></div>
+            <div class="h-5 w-5/6 bg-slate-300 rounded"></div>
+            <div class="h-5 w-4/6 bg-slate-300 rounded"></div>
+          </div>
+        </div>
+      }
     } @else if (postIsError()) {
     <p>Erro ao carregar</p>
     } @else {
@@ -46,7 +63,25 @@
   </article>
   <section class="mt-8 mb-10">
     @if (commentsIsLoading()) {
-    <p>Carregando...</p>
+      <div class="flex flex-col gap-6 animate-pulse">
+        <div class="h-6 w-40 bg-slate-300 rounded"></div>
+        <div class="flex flex-col gap-4">
+          <div class="h-10 w-full bg-slate-300 rounded"></div>
+          <div class="h-24 w-full bg-slate-300 rounded"></div>
+          <div class="h-10 w-32 bg-slate-300 rounded self-end"></div>
+        </div>
+        <div class="flex flex-col gap-6">
+          <div class="flex gap-4 items-center">
+            <div class="h-8 w-8 bg-slate-300 rounded-full"></div>
+            <div class="flex flex-col gap-2">
+              <div class="h-4 w-24 bg-slate-300 rounded"></div>
+              <div class="h-3 w-16 bg-slate-300 rounded"></div>
+            </div>
+          </div>
+          <div class="h-4 w-full bg-slate-300 rounded"></div>
+          <div class="h-4 w-5/6 bg-slate-300 rounded"></div>
+        </div>
+      </div>
     } @else if (commentsIsError()) {
     <p>Erro ao carregar comentários</p>
     } @else {

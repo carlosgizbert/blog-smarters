@@ -1,7 +1,7 @@
 import { Component, inject, signal, effect } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { forkJoin } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { delay, map, mergeMap } from 'rxjs/operators';
 
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
@@ -74,7 +74,7 @@ export class PostsListComponent {
   private fetchData() {
     this.httpPostsService
       .all()
-      .pipe(mergeMap((posts) => this.fetchAuthorsForPosts(posts)))
+      .pipe(mergeMap((posts) => this.fetchAuthorsForPosts(posts)), delay(1000))
       .subscribe({
         next: (postsWithAuthors) => {
           this.fullData.set(postsWithAuthors);

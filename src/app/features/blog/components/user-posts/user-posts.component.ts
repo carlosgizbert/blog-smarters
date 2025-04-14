@@ -1,6 +1,6 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs';
+import { delay, take } from 'rxjs';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { GetUserPostsResponse } from '../../models/interfaces/http/user';
 import { ContainerComponent } from '@/core/components/container/container.component';
@@ -42,7 +42,7 @@ export class UserPostsComponent {
 
     this.httpPostsService
       .byUser({ userId })
-      .pipe(take(1))
+      .pipe(take(1), delay(1000))
       .subscribe({
         next: (postsResponse) => {
           this.data.set(postsResponse);

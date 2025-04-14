@@ -1,6 +1,6 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
+import { delay, take } from 'rxjs';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
 import { HttpCommentsService } from '@/features/blog/services/http/http-comments/http-comments.service';
@@ -70,7 +70,7 @@ export class PostDetailComponent {
 
     this.httpPostsService
       .one({ postId })
-      .pipe(take(1))
+      .pipe(take(1), delay(1000))
       .subscribe({
         next: (postResponse) => {
           this.postData.set(postResponse);
@@ -132,6 +132,5 @@ export class PostDetailComponent {
     this.router.navigate(['/']);
   }
 
-  submitComment(event: Event) {
-  }
+  submitComment(event: Event) {}
 }

@@ -1,7 +1,22 @@
 <app-container>
   <div class="my-10 flex flex-col gap-6">
     @if (isLoading()) {
-    <p>Carregando...</p>
+      <div class="flex flex-col gap-8 animate-pulse">
+        <!-- Título -->
+        <div class="h-8 w-60 bg-slate-300 rounded"></div>
+
+        <!-- Lista de publicações -->
+        <section class="flex flex-col gap-6">
+          @for (skeleton of [0, 1, 2, 4, 5]; track $index) {
+          <article class="flex flex-col items-start gap-3">
+            <div class="h-5 w-3/4 bg-slate-300 rounded"></div>
+            <div class="h-4 w-full bg-slate-300 rounded"></div>
+            <div class="h-4 w-5/6 bg-slate-300 rounded"></div>
+          </article>
+          <hr class="border-slate-200" />
+          }
+        </section>
+      </div>
     } @else if (isError()) {
     <p>Erro ao carregar comentários</p>
     } @else {

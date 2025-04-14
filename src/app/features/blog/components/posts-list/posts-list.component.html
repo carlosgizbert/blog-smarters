@@ -1,8 +1,12 @@
 <app-container>
   <div class="my-10 flex flex-col">
-    <header class="flex flex-col gap-6 md:flex-row md:gap-8 justify-between items-start md:items-center mb-8">
+    <header
+      class="flex flex-col gap-6 md:flex-row md:gap-8 justify-between items-start md:items-center mb-8"
+    >
       <h1 class="text-2xl font-semibold text-slate-800">Últimas publicações</h1>
-      <div class="flex w-full md:w-auto flex-col gap-4 md:flex-row md:items-center">
+      <div
+        class="flex w-full md:w-auto flex-col gap-4 md:flex-row md:items-center"
+      >
         <div class="relative w-full md:w-80">
           <label for="search" class="sr-only">Buscar publicações</label>
           <input
@@ -12,7 +16,9 @@
             placeholder="Buscar..."
             (input)="search($event)"
           />
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+          >
             <svg
               class="w-5 h-5 text-slate-500"
               aria-hidden="true"
@@ -49,22 +55,22 @@
       "
       aria-label="Carregando notícias"
     >
-      <article class="animate-pulse flex flex-col space-y-4">
-        <div class="bg-slate-300 rounded-md h-48 w-full"></div>
-        <div class="bg-slate-300 rounded h-6 w-3/4"></div>
-        <div class="bg-slate-300 rounded h-4 w-full"></div>
-      </article>
-      <article class="animate-pulse flex flex-col space-y-4">
-        <div class="bg-slate-300 rounded-md h-48 w-full"></div>
-        <div class="bg-slate-300 rounded h-6 w-3/4"></div>
-        <div class="bg-slate-300 rounded h-4 w-full"></div>
-      </article>
-      <article class="animate-pulse flex flex-col space-y-4">
-        <div class="bg-slate-300 rounded-md h-48 w-full"></div>
-        <div class="bg-slate-300 rounded h-6 w-3/4"></div>
-        <div class="bg-slate-300 rounded h-4 w-full"></div>
-      </article>
+      @for (skeleton of [0, 1, 2, 3, 4, 5, 6]; track $index) {
+        <article class="animate-pulse flex flex-col space-y-4">
+          <div class="bg-slate-300 rounded-md h-48 w-full"></div>
+          <div class="bg-slate-300 rounded h-6 w-3/4"></div>
+          <div class="bg-slate-300 rounded h-4 w-full"></div>
+        </article>
+      }
     </section>
+    } @else if (dataIsEmpty()) {
+    <div
+      class="border-slate-200 border-1 rounded-sm w-full flex justify-center items-center py-12"
+    >
+      <p class="text-sm text-slate-500">
+        Nenhuma publicação encontrada. Tente refazer sua busca.
+      </p>
+    </div>
     } @else {
     <section
       [ngClass]="
@@ -74,9 +80,7 @@
       "
       aria-label="Lista de notícias"
     >
-      @if (dataIsEmpty()) {
-      <div class="flex items-center">Nada encontrado</div>
-      } @else { @for (item of currentPageData(); track $index) {
+      @if(!dataIsEmpty()) { @for (item of currentPageData(); track $index) {
       <article>
         <a
           [href]="'/posts/' + item.id"
