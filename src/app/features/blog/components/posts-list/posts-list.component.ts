@@ -9,11 +9,19 @@ import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
 import { GetPostsResponse } from '@/features/blog/models/interfaces/http/posts';
 import { Post } from '@/features/blog/models/dtos/posts';
+import { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-posts-list',
-  imports: [NgClass, TitleCasePipe, EllipsisPipe, ContainerComponent, ContainerComponent],
+  imports: [
+    ContainerComponent,
+    ContainerComponent,
+    EllipsisPipe,
+    NgClass,
+    RouterLink,
+    TitleCasePipe,
+  ],
   templateUrl: './posts-list.component.html',
 })
 export class PostsListComponent {

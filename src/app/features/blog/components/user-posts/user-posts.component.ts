@@ -1,18 +1,18 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { delay, take } from 'rxjs';
 
 import { ContainerComponent } from '@/core/components/container/container.component';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { UserPost } from '@/features/blog/models/dtos/posts';
 import { GetUserResponse } from '@/features/blog/models/interfaces/http/user';
-import { HttpUsersService } from '../../services/http/http-users/http-users.service';
+import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
 
 @Component({
   selector: 'app-user-posts',
   standalone: true,
-  imports: [TitleCasePipe, ContainerComponent],
+  imports: [TitleCasePipe, RouterLink, ContainerComponent],
   templateUrl: './user-posts.component.html',
 })
 export class UserPostsComponent {

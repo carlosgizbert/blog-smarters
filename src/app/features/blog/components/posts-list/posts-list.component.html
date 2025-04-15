@@ -1,54 +1,57 @@
 <app-container>
   <div class="my-10 flex flex-col">
     <header
-  class="flex flex-col gap-8 md:flex-row md:gap-12 justify-between items-start md:items-center mb-10"
->
-  <div class="flex flex-col gap-2">
-    <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
-      Últimas publicações
-    </h1>
-    <p class="text-slate-600 text-sm">
-      Explore conteúdos recentes e descubra novas tecnologias.
-    </p>
-  </div>
-
-  <div class="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto">
-    <div class="relative w-full md:w-80">
-      <label for="search" class="sr-only">Buscar publicações</label>
-      <input
-        type="text"
-        id="search"
-        (input)="search($event)"
-        class="w-full py-2 pl-10 pr-4 border border-slate-300 rounded-xl text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all duration-300"
-        placeholder="O que deseja ler agora?"
-      />
-      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <svg
-          class="w-5 h-5 text-slate-400"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M21 21l-4.35-4.35M16.65 16.65A7.5 7.5 0 1116.65 2.35a7.5 7.5 0 010 14.3z"
-          />
-        </svg>
-      </div>
-    </div>
-
-    <button
-      (click)="toggleView()"
-      class="cursor-pointer w-full md:w-auto px-6 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium shadow-md transition-all duration-300"
+      class="flex flex-col gap-8 md:flex-row md:gap-12 justify-between items-start md:items-center mb-10"
     >
-      {{ isVertical() ? "Ver em grade" : "Ver em lista" }}
-    </button>
-  </div>
-</header>
+      <div class="flex flex-col gap-2">
+        <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
+          Últimas publicações
+        </h1>
+        <p class="text-slate-600 text-sm">
+          Explore conteúdos recentes e descubra novas tecnologias.
+        </p>
+      </div>
 
+      <div
+        class="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto"
+      >
+        <div class="relative w-full md:w-80">
+          <label for="search" class="sr-only">Buscar publicações</label>
+          <input
+            type="text"
+            id="search"
+            (input)="search($event)"
+            class="w-full py-2 pl-10 pr-4 border border-slate-300 rounded-xl text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all duration-300"
+            placeholder="O que deseja ler agora?"
+          />
+          <div
+            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+          >
+            <svg
+              class="w-5 h-5 text-slate-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-4.35-4.35M16.65 16.65A7.5 7.5 0 1116.65 2.35a7.5 7.5 0 010 14.3z"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <button
+          (click)="toggleView()"
+          class="cursor-pointer w-full md:w-auto px-6 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium shadow-md transition-all duration-300"
+        >
+          {{ isVertical() ? "Ver em grade" : "Ver em lista" }}
+        </button>
+      </div>
+    </header>
 
     @if (isLoading()) {
     <section
@@ -60,11 +63,11 @@
       aria-label="Carregando notícias"
     >
       @for (skeleton of [0, 1, 2, 3, 4, 5]; track $index) {
-        <article class="animate-pulse flex flex-col space-y-4">
-          <div class="bg-slate-300 rounded-md h-48 w-full"></div>
-          <div class="bg-slate-300 rounded h-6 w-3/4"></div>
-          <div class="bg-slate-300 rounded h-4 w-full"></div>
-        </article>
+      <article class="animate-pulse flex flex-col space-y-4">
+        <div class="bg-slate-300 rounded-md h-48 w-full"></div>
+        <div class="bg-slate-300 rounded h-6 w-3/4"></div>
+        <div class="bg-slate-300 rounded h-4 w-full"></div>
+      </article>
       }
     </section>
     } @else if (dataIsEmpty()) {
@@ -87,7 +90,7 @@
       @if(!dataIsEmpty()) { @for (item of currentPageData(); track $index) {
       <article>
         <a
-          [href]="'/posts/' + item.id"
+          [routerLink]="['/posts/', item.id]"
           class="hover:underline cursor-pointer transition duration-500 flex"
           [ngClass]="isVertical() ? 'flex-row items-center' : 'flex-col'"
         >

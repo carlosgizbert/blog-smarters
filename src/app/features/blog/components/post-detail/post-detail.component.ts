@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { delay, take } from 'rxjs';
 
 import { ContainerComponent } from '@/core/components/container/container.component';
@@ -16,7 +16,7 @@ import { TitleCasePipe } from '@angular/common';
   selector: 'app-post-detail',
   standalone: true,
   templateUrl: './post-detail.component.html',
-  imports: [ContainerComponent, TitleCasePipe],
+  imports: [ContainerComponent, TitleCasePipe, RouterLink],
 })
 export class PostDetailComponent {
   private readonly httpPostsService = inject(HttpPostsService);

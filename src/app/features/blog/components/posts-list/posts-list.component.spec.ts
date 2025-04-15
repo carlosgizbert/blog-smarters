@@ -4,6 +4,7 @@ import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
 import { of } from 'rxjs';
 import { createGetPostsResponseMock } from '../../tests/mocks/posts.mock';
+import { ActivatedRoute } from '@angular/router';
 
 describe('PostsListComponent', () => {
   let component: PostsListComponent;
@@ -32,6 +33,12 @@ describe('PostsListComponent', () => {
           useValue: {
             one: ({ userId }: { userId: number }) =>
               of({ id: userId, name: `User ${userId}` }),
+          },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of({ get: (key: string) => '1' }),
           },
         },
       ],
