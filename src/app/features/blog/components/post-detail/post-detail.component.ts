@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { delay, take } from 'rxjs';
 
 import { ContainerComponent } from '@/core/components/container/container.component';
@@ -10,13 +10,22 @@ import { HttpCommentsService } from '@/features/blog/services/http/http-comments
 import { Post } from '@/features/blog/models/dtos/posts';
 import { Author } from '@/features/blog/models/author';
 import { Comment } from '@/features/blog/models/dtos/comments';
-import { TitleCasePipe } from '@angular/common';
+import { CommentsSectionComponent } from './comments-section/comments-section.component';
+import { PostContentComponent } from './post-content/post-content.component';
+import { PostHeaderComponent } from './post-header/post-header.component';
+import { SkeletonPostDetailComponent } from './skeleton-post-detail/skeleton-post-detail.component';
 
 @Component({
   selector: 'app-post-detail',
   standalone: true,
   templateUrl: './post-detail.component.html',
-  imports: [ContainerComponent, TitleCasePipe, RouterLink],
+  imports: [
+    ContainerComponent,
+    CommentsSectionComponent,
+    PostContentComponent,
+    PostHeaderComponent,
+    SkeletonPostDetailComponent,
+  ],
 })
 export class PostDetailComponent {
   private readonly httpPostsService = inject(HttpPostsService);

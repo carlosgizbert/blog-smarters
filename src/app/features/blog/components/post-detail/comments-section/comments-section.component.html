@@ -1,0 +1,60 @@
+<section class="flex flex-col gap-8" aria-label="Comentários">
+  <h2 class="text-xl font-semibold text-slate-800">
+    Comentários ({{ comments.length }})
+  </h2>
+  <form (submit)="handleSubmit($event)" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="border text-sm text-slate-500 border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-800 transition"
+        placeholder="Qual seu nome?"
+        required
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <textarea
+        id="message"
+        name="message"
+        rows="4"
+        class="border text-sm text-slate-500 border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-800 transition resize-none"
+        placeholder="Escreva seu comentário..."
+        required
+      ></textarea>
+    </div>
+
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        class="px-6 py-2 rounded-lg bg-slate-800 text-white text-sm hover:bg-slate-900 transition cursor-pointer"
+      >
+        Publicar comentário
+      </button>
+    </div>
+  </form>
+  @for (comment of comments; track $index) {
+  <article class="flex flex-col items-start gap-2">
+    <header class="flex gap-3 items-center">
+      <div
+        class="h-8 w-8 bg-slate-900 rounded-full flex items-center justify-center"
+      >
+        <p class="text-xs text-white">
+          {{ comment?.name?.charAt(0) | titlecase }}
+        </p>
+      </div>
+      <div class="flex flex-col">
+        <p class="text-sm font-medium">{{ comment.name | titlecase }}</p>
+        <p class="text-sm text-slate-500">
+          {{ comment.email.toLowerCase() }}
+        </p>
+      </div>
+    </header>
+    <p class="text-sm">
+      {{ comment.body | titlecase }}
+    </p>
+  </article>
+  <hr class="border-slate-200" />
+  }
+  <p class="mx-auto text-sm text-slate-500">Final da lista</p>
+</section>
