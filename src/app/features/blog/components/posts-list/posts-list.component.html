@@ -5,7 +5,7 @@
 >
   <div class="flex flex-col gap-2">
     <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
-      Últimas Publicações
+      Últimas publicações
     </h1>
     <p class="text-slate-600 text-sm">
       Explore conteúdos recentes e descubra novas tecnologias.
@@ -19,7 +19,7 @@
         type="text"
         id="search"
         (input)="search($event)"
-        class="w-full py-2 pl-10 pr-4 border border-slate-300 rounded-xl text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all duration-300 shadow-sm"
+        class="w-full py-2 pl-10 pr-4 border border-slate-300 rounded-xl text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all duration-300"
         placeholder="Buscar por título ou autor..."
       />
       <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -44,7 +44,7 @@
       (click)="toggleView()"
       class="cursor-pointer w-full md:w-auto px-6 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium shadow-md transition-all duration-300"
     >
-      {{ isVertical() ? "Ver em Grade" : "Ver em Lista" }}
+      {{ isVertical() ? "Ver em grade" : "Ver em lista" }}
     </button>
   </div>
 </header>
@@ -88,7 +88,7 @@
       <article>
         <a
           [href]="'/posts/' + item.id"
-          class="cursor-pointer transition duration-500 flex"
+          class="hover:underline cursor-pointer transition duration-500 flex"
           [ngClass]="isVertical() ? 'flex-row items-center' : 'flex-col'"
         >
           <div
