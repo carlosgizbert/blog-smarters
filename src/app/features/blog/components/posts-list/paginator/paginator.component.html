@@ -1,0 +1,19 @@
+<nav class="flex justify-center gap-4 m-4 my-12">
+  <button
+    class="px-4 py-2 rounded-md bg-slate-800 disabled:bg-slate-300 text-white text-sm hover:bg-slate-900 transition cursor-pointer disabled:cursor-not-allowed select-none"
+    (click)="prev.emit()"
+    [disabled]="current === 1"
+  >
+    Anterior
+  </button>
+  <div class="flex items-center px-4 py-2 text-slate-700 text-sm">
+    Página {{ current }} de {{ total }}
+  </div>
+  <button
+    class="px-4 py-2 rounded-md bg-slate-800 disabled:bg-slate-300 text-white text-sm hover:bg-slate-900 transition cursor-pointer disabled:cursor-not-allowed select-none"
+    (click)="next.emit()"
+    [disabled]="current === total"
+  >
+    Próxima
+  </button>
+</nav>

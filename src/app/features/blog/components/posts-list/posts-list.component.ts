@@ -1,15 +1,17 @@
 import { Component, inject, signal, effect } from '@angular/core';
-import { NgClass, TitleCasePipe } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { delay, map, mergeMap } from 'rxjs/operators';
-import { EllipsisPipe } from '@/shared/pipes/ellipsis/index.pipe';
 
+import { Post } from '@/features/blog/models/dtos/posts';
 import { ContainerComponent } from '@/core/components/container/container.component';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
 import { GetPostsResponse } from '@/features/blog/models/interfaces/http/posts';
-import { Post } from '@/features/blog/models/dtos/posts';
-import { RouterLink } from '@angular/router';
+
+import { PostSkeletonComponent } from './post-skeleton/post-skeleton.component';
+import { PostCardComponent } from './post-card/post-card.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 @Component({
   standalone: true,
@@ -17,10 +19,10 @@ import { RouterLink } from '@angular/router';
   imports: [
     ContainerComponent,
     ContainerComponent,
-    EllipsisPipe,
     NgClass,
-    RouterLink,
-    TitleCasePipe,
+    PaginatorComponent,
+    PostCardComponent,
+    PostSkeletonComponent,
   ],
   templateUrl: './posts-list.component.html',
 })
@@ -29,13 +31,13 @@ export class PostsListComponent {
   private readonly httpUsersService = inject(HttpUsersService);
   readonly PAGE_SIZE = 6;
 
-  fullData = signal<Post[]>([]);
-  filteredData = signal<Post[]>([]);
   currentPageData = signal<Post[]>([]);
-  isVertical = signal(false);
-  isLoading = signal(true);
-  isError = signal(false);
   dataIsEmpty = signal(false);
+  filteredData = signal<Post[]>([]);
+  fullData = signal<Post[]>([]);
+  isError = signal(false);
+  isLoading = signal(true);
+  isVertical = signal(false);
 
   currentPage = signal(1);
   totalPages = signal(0);

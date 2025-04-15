@@ -21,9 +21,7 @@ describe('UserPostsComponent', () => {
   beforeEach(async () => {
     mockHttpPostsService = jasmine.createSpyObj('HttpPostsService', ['byUser']);
     mockHttpUsersService = jasmine.createSpyObj('HttpUsersService', ['one']);
-
     mockHttpPostsService.byUser.and.returnValue(of([createGetUserPostsResponseMock({ title: 'Post 1' })]));
-
     mockHttpUsersService.one.and.returnValue(of(createGetUserResponseMock()));
 
     await TestBed.configureTestingModule({
