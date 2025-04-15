@@ -1,7 +1,5 @@
 # 📚 Smarters Blog
 
----
-
 ## Tecnologias
 
 - [Angular 19](https://angular.io/)
