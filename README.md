@@ -1,20 +1,16 @@
 # 📚 Smarters Blog
 
-**Smarters Blog**
-
----
-
-## 🚀 Tecnologias
+## Tecnologias
 
 - [Angular 19](https://angular.io/)
 - [RxJS](https://rxjs.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [TailwindCSS](https://tailwindcss.com/) (opcional)
-- [Karma + Jasmine](https://karma-runner.github.io/latest/index.html) (para testes)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Karma + Jasmine](https://karma-runner.github.io/latest/index.html) 
 
 ---
 
-## 📦 Instalação
+## Como rodar local
 
 1. **Clone o repositório:**
 git clone https://github.com/carlosgizbert/blog-smarters
@@ -24,6 +20,9 @@ npm install
 
 3. **Rode o projeto:**
 ng serve
+
+## Testes
+ng test
 
 ## Deploy
 https://blog-smarters.vercel.app/posts
