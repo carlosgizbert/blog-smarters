@@ -6,6 +6,8 @@ import { delay, take } from 'rxjs';
 import { ContainerComponent } from '@/core/components/container/container.component';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
 import { UserPost } from '@/features/blog/models/dtos/posts';
+import { GetUserResponse } from '@/features/blog/models/interfaces/http/user';
+import { HttpUsersService } from '../../services/http/http-users/http-users.service';
 
 @Component({
   selector: 'app-user-posts',
@@ -15,12 +17,16 @@ import { UserPost } from '@/features/blog/models/dtos/posts';
 })
 export class UserPostsComponent {
   private readonly httpPostsService = inject(HttpPostsService);
+  private readonly httpUsersService = inject(HttpUsersService);
   private readonly route = inject(ActivatedRoute);
 
   readonly userId = signal<number | null>(null);
   readonly data = signal<UserPost[] | null>(null);
-  readonly isLoading = signal(true);
-  readonly isError = signal(false);
+  readonly userData = signal<GetUserResponse | null>(null);
+  readonly authorIsLoading = signal(true);
+  readonly authorIsError = signal(false);
+  readonly postsIsLoading = signal(true);
+  readonly postsIsError = signal(false);
 
   constructor() {
     this.route.paramMap.subscribe((params) => {
@@ -31,11 +37,27 @@ export class UserPostsComponent {
     });
 
     effect(() => {
-      const id = this.userId();
-      if (id !== null) {
-        this.fetchUserPosts(id);
+      const userId = this.userId();
+      if (userId !== null) {
+        this.fetchUserPosts(userId);
+        this.fetchUserData(userId);
       }
     });
+  }
+
+  private fetchUserData(userId: number) {
+    this.startLoading();
+
+    this.httpUsersService
+      .one({ userId })
+      .pipe(take(1), delay(1000))
+      .subscribe({
+        next: (userResponse) => {
+          this.authorIsLoading.set(false);
+          this.userData.set(userResponse)
+        },
+        error: (error) => this.handleError(error),
+      });
   }
 
   private fetchUserPosts(userId: number) {
@@ -51,8 +73,8 @@ export class UserPostsComponent {
   }
 
   private startLoading() {
-    this.isLoading.set(true);
-    this.isError.set(false);
+    this.postsIsLoading.set(true);
+    this.postsIsError.set(false);
   }
 
   private handleSuccess(posts: UserPost[]) {
@@ -62,11 +84,11 @@ export class UserPostsComponent {
     }
 
     this.data.set(posts);
-    this.isLoading.set(false);
+    this.postsIsLoading.set(false);
   }
 
   private handleError(error: { status?: number }) {
-    this.isError.set(true);
-    this.isLoading.set(false);
+    this.postsIsError.set(true);
+    this.postsIsLoading.set(false);
   }
 }
