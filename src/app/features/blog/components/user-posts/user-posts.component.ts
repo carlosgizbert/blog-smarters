@@ -8,11 +8,13 @@ import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-
 import { UserPost } from '@/features/blog/models/dtos/posts';
 import { GetUserResponse } from '@/features/blog/models/interfaces/http/user';
 import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
+import { UserHeaderComponent } from "./user-header/user-header.component";
+import { UserPostsSkeletonComponent } from './user-posts-skeleton/user-posts-skeleton.component';
 
 @Component({
   selector: 'app-user-posts',
   standalone: true,
-  imports: [TitleCasePipe, RouterLink, ContainerComponent],
+  imports: [TitleCasePipe, RouterLink, ContainerComponent, UserHeaderComponent, UserPostsSkeletonComponent],
   templateUrl: './user-posts.component.html',
 })
 export class UserPostsComponent {

@@ -1,49 +1,12 @@
 <app-container>
   <div class="my-10 flex flex-col gap-6">
-    @if (authorIsLoading()) {
-      <header class="flex flex-col gap-8 animate-pulse">
-        <div class="flex items-center gap-4">
-          <div class="h-16 w-16 bg-slate-300 rounded-full"></div>
-          <div class="flex flex-col">
-            <div class="h-6 w-40 bg-slate-300 rounded"></div>
-            <div class="h-4 w-24 bg-slate-300 rounded mt-2"></div>
-            <div class="h-4 w-32 bg-slate-300 rounded mt-2"></div>
-          </div>
-        </div>
-      </header>
-    } @else {
-      <header class="flex flex-col gap-8">
-        <div class="flex items-center gap-4">
-          <div
-            class="h-16 w-16 rounded-full bg-slate-800 flex items-center justify-center text-white text-xl font-bold uppercase"
-          >
-            {{ userData()?.name?.charAt(0) }}
-          </div>
-          <div class="flex flex-col">
-            <h2 class="text-xl font-semibold text-slate-900">
-              {{ userData()?.name }}
-            </h2>
-            <p class="text-sm text-slate-500">{{ '@' + userData()?.username?.toLowerCase() }}</p>
-            <p class="text-sm text-slate-500">{{ userData()?.email?.toLocaleLowerCase() }}</p>
-          </div>
-        </div>
-      </header>
-    }
-    <hr class="border-slate-100 border-1">
+    <app-user-header
+      [userData]="userData()"
+      [isLoading]="authorIsLoading()"
+    ></app-user-header>
+    <hr class="border-slate-100 border-1" />
     @if (postsIsLoading()) {
-    <div class="flex flex-col gap-8 animate-pulse">
-      <div class="h-8 w-60 bg-slate-300 rounded"></div>
-      <section class="flex flex-col gap-6">
-        @for (skeleton of [0, 1, 2, 4, 5]; track $index) {
-        <article class="flex flex-col items-start gap-3">
-          <div class="h-5 w-3/4 bg-slate-300 rounded"></div>
-          <div class="h-4 w-full bg-slate-300 rounded"></div>
-          <div class="h-4 w-5/6 bg-slate-300 rounded"></div>
-        </article>
-        <hr class="border-slate-200" />
-        }
-      </section>
-    </div>
+    <app-user-posts-skeleton></app-user-posts-skeleton>
     } @else if (postsIsError()) {
     <div
       class="border-slate-200 border-1 rounded-sm w-full flex flex-col gap-6 justify-center items-center py-12"
@@ -65,7 +28,10 @@
     </header>
     <section class="flex flex-col gap-4" aria-label="Comentários">
       @for (post of data(); track $index) {
-      <a class="cursor-pointer hover:underline" [routerLink]="['/posts/', post.id]">
+      <a
+        class="cursor-pointer hover:underline"
+        [routerLink]="['/posts/', post.id]"
+      >
         <article class="flex flex-col items-start gap-2">
           <header class="flex flex-col gap-3">
             <p class="text-sm font-medium">{{ post.title | titlecase }}</p>
