@@ -67,8 +67,8 @@ describe('UserPostsComponent', () => {
 
     expect(component.data()).toBeTruthy();
     expect(component.data()?.length).toBe(2);
-    expect(component.isLoading()).toBeFalse();
-    expect(component.isError()).toBeFalse();
+    expect(component.postsIsLoading()).toBeFalse();
+    expect(component.postsIsError()).toBeFalse();
   }));
 
   it('should handle empty posts and set error state', fakeAsync(() => {
@@ -77,8 +77,8 @@ describe('UserPostsComponent', () => {
     tick(1000);
 
     expect(component.data()).toBeNull();
-    expect(component.isError()).toBeTrue();
-    expect(component.isLoading()).toBeFalse();
+    expect(component.postsIsError()).toBeTrue();
+    expect(component.postsIsLoading()).toBeFalse();
   }));
 
   it('should handle error response and set error state', fakeAsync(() => {
@@ -89,7 +89,7 @@ describe('UserPostsComponent', () => {
     tick(1000);
 
     expect(component.data()).toBeNull();
-    expect(component.isError()).toBeTrue();
-    expect(component.isLoading()).toBeFalse();
+    expect(component.postsIsError()).toBeTrue();
+    expect(component.postsIsLoading()).toBeFalse();
   }));
 });
