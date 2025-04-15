@@ -54,9 +54,12 @@ export class UserPostsComponent {
       .subscribe({
         next: (userResponse) => {
           this.authorIsLoading.set(false);
-          this.userData.set(userResponse)
+          this.userData.set(userResponse);
         },
-        error: (error) => this.handleError(error),
+        error: (error) => {
+          this.authorIsError.set(true);
+          this.authorIsLoading.set(false);
+        },
       });
   }
 

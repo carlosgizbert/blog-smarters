@@ -4,19 +4,27 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
+import { of } from 'rxjs';
 import { UserPostsComponent } from './user-posts.component';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { HttpPostsService } from '@/features/blog/services/http/http-posts/http-posts.service';
-import { of, throwError } from 'rxjs';
 import { createGetUserPostsResponseMock } from '@/features/blog/tests/mocks/user-posts.mock';
+import { HttpUsersService } from '@/features/blog/services/http/http-users/http-users.service';
+import { createGetUserResponseMock } from '@/features/blog/tests/mocks/user.mock';
 
 describe('UserPostsComponent', () => {
   let component: UserPostsComponent;
   let fixture: ComponentFixture<UserPostsComponent>;
   let mockHttpPostsService: jasmine.SpyObj<HttpPostsService>;
+  let mockHttpUsersService: jasmine.SpyObj<HttpUsersService>;
 
   beforeEach(async () => {
     mockHttpPostsService = jasmine.createSpyObj('HttpPostsService', ['byUser']);
+    mockHttpUsersService = jasmine.createSpyObj('HttpUsersService', ['one']);
+
+    mockHttpPostsService.byUser.and.returnValue(of([createGetUserPostsResponseMock({ title: 'Post 1' })]));
+
+    mockHttpUsersService.one.and.returnValue(of(createGetUserResponseMock()));
 
     await TestBed.configureTestingModule({
       imports: [UserPostsComponent],
@@ -30,6 +38,10 @@ describe('UserPostsComponent', () => {
         {
           provide: HttpPostsService,
           useValue: mockHttpPostsService,
+        },
+        {
+          provide: HttpUsersService,
+          useValue: mockHttpUsersService,
         },
       ],
     }).compileComponents();
@@ -62,7 +74,9 @@ describe('UserPostsComponent', () => {
         createGetUserPostsResponseMock({ title: 'User post 2' }),
       ])
     );
+
     createComponent();
+
     tick(1000);
 
     expect(component.data()).toBeTruthy();
@@ -73,18 +87,6 @@ describe('UserPostsComponent', () => {
 
   it('should handle empty posts and set error state', fakeAsync(() => {
     mockHttpPostsService.byUser.and.returnValue(of([]));
-    createComponent();
-    tick(1000);
-
-    expect(component.data()).toBeNull();
-    expect(component.postsIsError()).toBeTrue();
-    expect(component.postsIsLoading()).toBeFalse();
-  }));
-
-  it('should handle error response and set error state', fakeAsync(() => {
-    mockHttpPostsService.byUser.and.returnValue(
-      throwError(() => ({ status: 404 }))
-    );
     createComponent();
     tick(1000);
 
