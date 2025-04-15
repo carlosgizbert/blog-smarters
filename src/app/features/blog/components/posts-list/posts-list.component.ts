@@ -19,7 +19,7 @@ import { Post } from '@/features/blog/models/dtos/posts';
 export class PostsListComponent {
   private readonly httpPostsService = inject(HttpPostsService);
   private readonly httpUsersService = inject(HttpUsersService);
-  readonly PAGE_SIZE = 8;
+  readonly PAGE_SIZE = 6;
 
   fullData = signal<Post[]>([]);
   filteredData = signal<Post[]>([]);
