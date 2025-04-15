@@ -1,7 +1,5 @@
 # 📚 Smarters Blog
 
-**Smarters Blog**
-
 ---
 
 ## Tecnologias
